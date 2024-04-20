@@ -49,8 +49,8 @@ maipu = Ciudad{
 -- Es correcto asi?
 valorCiudad :: Ciudad -> Number
 valorCiudad ciudad | anioFundacion ciudad < 1800          =  (+1800) (- anioFundacion ciudad)
-                   | null (atraccionesPrincipales ciudad) = costoDeVida ciudad *2
-                   | otherwise                           = costoDeVida ciudad *3
+                   | atraccionesPrincipales ciudad == []  = costoDeVida ciudad *2
+                   | otherwise                            = costoDeVida ciudad *3
 
 
 -- Issue 2.1
