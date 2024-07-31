@@ -1,0 +1,7 @@
+cradle:
+  stack:
+    - path: "./src"
+      component: "re-parcialfuncional:lib"
+
+    - path: "./test"
+      component: "re-parcialfuncional:test:re-parcialfuncional-test"
