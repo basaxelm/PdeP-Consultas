@@ -38,3 +38,14 @@ verificarPiramide  [_] = True
 verificarPiramide (p1:p2:ps) = cantidadDeDeptos p1 > cantidadDeDeptos p2 && verificarPiramide (p2:ps)
 
 
+-- Punto 3
+{- Conocer el precio del departamento más caro de un edificio, según su superficie y el valor base del metro cuadrado del edificio, multiplicado por el coeficiente de robustez del mismo.
+-}
+
+masCaro edificio = maximum . calcularPrecio edificio . obtenerDeptos $ pisos edificio
+
+obtenerDeptos = concatMap snd
+-- Al usar map se obtienen listas con listas de deptos -> [[Deptos]] lo cual genera un problema para calcularPrecio
+-- Esto se soluciona con concatMap ya que aplica la funcion y luego concatena todos los resultados, generando una sola lista
+
+calcularPrecio edificio deptos = map ((* coeficienteDeRobustez edificio) . (* valorBaseXm2 edificio) . superficieEnm2) deptos
