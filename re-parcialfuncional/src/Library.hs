@@ -69,7 +69,7 @@ habitabilidadPromedio deptos = (/ length deptos) . sum . map porcentajeDeHabitab
 split cantidad depto = replicate cantidad splitDeptos
             where splitDeptos = Departamento {
                     superficieEnm2 = superficieEnm2 depto / cantidad,
-                    porcentajeDeHabitabilidad = porcentajeDeHabitabilidad depto / cantidad
+                    porcentajeDeHabitabilidad = porcentajeDeHabitabilidad depto
             }
 
 
@@ -98,8 +98,39 @@ afectarDeptos valor (piso, deptos) = (piso, map (reducirHabitabilidad valor) dep
         where reducirHabitabilidad valor depto = depto { porcentajeDeHabitabilidad = porcentajeDeHabitabilidad depto - valor}
 
 --b)
-{- plaga valor numPiso edificio = edificio {
-                        pisos = afectarXPlaga valor numPiso (pisos edificio)
-                    }
+plaga valor numPiso edificio = edificio { pisos = afectarXPlaga valor numPiso (pisos edificio) }
 
-afectarXPlaga valor numPiso pisos = cambiarElemento numPiso () pisos -}
+afectarXPlaga valor numPiso pisos = cambiarElemento numPiso (afectarDeptos valor (pisos !! numPiso)) pisos
+
+--c)
+terremoto valor edificio = edificio { coeficienteDeRobustez = coeficienteDeRobustez edificio - valor}
+
+
+-- Punto 6
+{- De la mano de las catástrofes, llegan los arreglos o mejoras al edificio:
+    a. Ampliación: se realiza la construcción de un nuevo piso con una determinada cantidad de departamentos y de metros, que se reparten equitativamente entre los departamentos. El piso se agrega arriba, porque las máquinas para levantar los N pisos superiores de un edificio las tenemos descompuestas y no podemos meterlo en el medio. Al ser nuevo, su habitabilidad es de 100.
+    b. Fumigación: A cada departamento que tiene habitabilidad menor a 60%, les sube en 20 puntos porcentuales.
+    c. MergeEdificio: Debe aplicar un merge sobre un número de piso dado de un edificio.
+    d. SplitEdificio: Recibe una cantidad de nuevos departamentos y el número de piso donde debe hacer un split sobre el último departamento
+-}
+
+mejorar edificio nuevosPisos = edificio { pisos = nuevosPisos}
+
+--a)
+ampliacion cantidad superficie edificio = mejorar edificio (pisos edificio ++ [agregarNuevoPiso cantidad superficie numPiso])
+            where numPiso = length (pisos edificio)
+
+agregarNuevoPiso cantidad superficie numPiso = (numPiso + 1 , split cantidad . obtenerDeptoBase $ superficie)
+            where obtenerDeptoBase superficie = Departamento {
+                                        superficieEnm2 = superficie,
+                                        porcentajeDeHabitabilidad = 100
+                                    }
+
+
+--b)
+fumigacion edificio = mejorar edificio (map modificarDeptos (pisos edificio))
+
+modificarDeptos (piso, deptos) = (piso, map aumentarHabitabilidad deptos)
+            where aumentarHabitabilidad depto 
+                            | porcentajeDeHabitabilidad depto < 60 = depto { porcentajeDeHabitabilidad = porcentajeDeHabitabilidad depto + 20}
+                            | otherwise = depto
