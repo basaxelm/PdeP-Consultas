@@ -90,17 +90,16 @@ incendio numPiso edificio = edificio {
                         coeficienteDeRobustez = coeficienteDeRobustez edificio / 2
                     }
 
-afectarXIncendio numPiso pisos = devolverDeptos . map afectarDeptos . filter ((>= numPiso) . fst) $ pisos
-            where devolverDeptos lista = filter ((< numPiso) . fst) pisos ++ lista
+afectarXIncendio numPiso pisos 
+        | numPiso <= length pisos = afectarXIncendio (numPiso + 1) . cambiarElemento numPiso (afectarDeptos 30 (pisos !! numPiso)) $ pisos
+        | otherwise = pisos
 
-afectarDeptos (piso, deptos) = (piso, map (reducirHabitabilidad 30) deptos)
-
-reducirHabitabilidad valor depto = depto { porcentajeDeHabitabilidad = porcentajeDeHabitabilidad depto - valor}
-
+afectarDeptos valor (piso, deptos) = (piso, map (reducirHabitabilidad valor) deptos)
+        where reducirHabitabilidad valor depto = depto { porcentajeDeHabitabilidad = porcentajeDeHabitabilidad depto - valor}
 
 --b)
 {- plaga valor numPiso edificio = edificio {
                         pisos = afectarXPlaga valor numPiso (pisos edificio)
                     }
 
-afectarXPlaga valor numPiso pisos = pisos -}
+afectarXPlaga valor numPiso pisos = cambiarElemento numPiso () pisos -}
