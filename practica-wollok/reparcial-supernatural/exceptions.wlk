@@ -1,0 +1,1 @@
+class NoPuedeParticiparException inherits Exception { }

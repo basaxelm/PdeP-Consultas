@@ -1,0 +1,41 @@
+import example.*
+
+describe "tests de habilidad" {
+
+  test "Joaquin canta en el grupo Pimpinela: queremos conocer su habilidad" {
+    assert.equals(25, joaquin.habilidad())
+  }
+
+  test "Joaquin decide lanzar su carrera de solista: queremos conocer su habilidad" {
+    joaquin.abandonarGrupo()
+    assert.equals(20, joaquin.habilidad())
+  }
+
+  test "Lucia canta en el grupo Pimpinela: queremos conocer su habilidad" {
+    assert.equals(50, lucia.habilidad())
+  }
+
+  test "Lucia decide lanzar su carrera de solista: queremos conocer su habilidad" {
+    lucia.abandonarGrupo()
+    assert.equals(70, lucia.habilidad())
+  }
+
+  test "Luis Alberto toca con el Fender: queremos conocer su habilidad" {
+    assert.equals(80, luisAlberto.habilidad())
+  }
+
+  test "Luis Alberto toca con la gibson sana: queremos conocer su habilidad" {
+    luisAlberto.guitarra(gibson)
+    assert.equals(100, luisAlberto.habilidad())
+  }
+
+  test "Luis Alberto toca con la gibson rota: queremos conocer su habilidad" {
+    luisAlberto.guitarra(gibson)
+    gibson.romper()
+    assert.equals(40, luisAlberto.habilidad())
+  }
+}
+
+/* describe "tests de interpretacion" {
+
+} */

@@ -1,0 +1,1 @@
+class PizzaCompuestaNoValidaException inherits Exception { }
